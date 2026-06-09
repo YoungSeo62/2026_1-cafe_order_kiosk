@@ -7,6 +7,10 @@ from cafe_order_kiosk.models import OrderStatus
 from cafe_order_kiosk.kiosk_store import KioskStore
 from cafe_order_kiosk.utils import format_money
 
+MONTHLY_DRINK_ID = 5
+MONTHLY_DRINK_NAME = "Matcha Latte"
+FREE_GIFT = "쿠키 1개"
+
 
 @dataclass
 class CLIState:
@@ -209,6 +213,17 @@ def handle_pay(store: KioskStore, state: CLIState, args: list[str]) -> None:
         return
 
     print(f"주문 #{order.id} 결제 완료 ({method}).")
+    print_monthly_drink_gift(order)
+
+
+def print_monthly_drink_gift(order) -> None:
+    for item in order.items:
+        if item.menu_item_id == MONTHLY_DRINK_ID:
+            print()
+            print("[이달의 음료 이벤트]")
+            print(f"{MONTHLY_DRINK_NAME} 주문 감사합니다!")
+            print(f"사은품으로 {FREE_GIFT}가 제공됩니다.")
+            return
 
 
 def print_order(order) -> None:
